@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
   bookingNumber: {
     type: String,
-    required: true,
     unique: true
   },
   reservation: {
@@ -51,7 +50,6 @@ const bookingSchema = new mongoose.Schema({
   },
   totalAmount: {
     type: Number,
-    required: true,
     min: 0
   },
   status: {

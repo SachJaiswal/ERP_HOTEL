@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const reservationSchema = new mongoose.Schema({
   reservationNumber: {
     type: String,
-    required: true,
     unique: true
   },
   guest: {
@@ -62,12 +61,10 @@ const reservationSchema = new mongoose.Schema({
   },
   numberOfNights: {
     type: Number,
-    required: true,
     min: 1
   },
   totalAmount: {
     type: Number,
-    required: true,
     min: 0
   },
   status: {

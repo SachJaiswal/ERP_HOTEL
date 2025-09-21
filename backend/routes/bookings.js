@@ -4,9 +4,20 @@ const Booking = require('../models/Booking');
 const Reservation = require('../models/Reservation');
 const router = express.Router();
 
-// Validation middleware
+// Validation middleware for creating bookings
 const validateBooking = [
   body('reservation').isMongoId().withMessage('Valid reservation ID is required'),
+  body('serviceType').notEmpty().withMessage('Service type is required'),
+  body('serviceName').notEmpty().withMessage('Service name is required'),
+  body('scheduledDate').isISO8601().withMessage('Valid scheduled date is required'),
+  body('scheduledTime').notEmpty().withMessage('Scheduled time is required'),
+  body('duration').isInt({ min: 15 }).withMessage('Duration must be at least 15 minutes'),
+  body('price').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
+  body('quantity').isInt({ min: 1 }).withMessage('Quantity must be at least 1')
+];
+
+// Validation middleware for updating bookings (without reservation field)
+const validateBookingUpdate = [
   body('serviceType').notEmpty().withMessage('Service type is required'),
   body('serviceName').notEmpty().withMessage('Service name is required'),
   body('scheduledDate').isISO8601().withMessage('Valid scheduled date is required'),
@@ -124,7 +135,7 @@ router.post('/', validateBooking, async (req, res) => {
 });
 
 // PUT /api/bookings/:id - Update booking
-router.put('/:id', validateBooking, async (req, res) => {
+router.put('/:id', validateBookingUpdate, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
